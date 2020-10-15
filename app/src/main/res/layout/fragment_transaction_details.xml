@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="tx"
+            type="com.aveworks.eagle.data.Transaction" />
+
+        <import type="com.aveworks.eagle.R" />
+
+    </data>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- TODO add an xml background and remove the unnecessary view  -->
+        <FrameLayout
+            android:id="@+id/bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/direction_bar"
+            app:backgroundResource="@{tx.isSent ? R.color.sent : R.color.receive}"
+            tools:background="@color/receive" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="@dimen/margin_normal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/date"
+                android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent1 : R.style.TextAppearance_Eagle_Receive1}"
+                tools:textAppearance="@style/TextAppearance.Eagle.Receive1" />
+
+            <TextView
+                android:id="@+id/date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{tx.date(true)}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="23 Sept, 2020" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@{tx.isSent ? @string/sent : @string/receive}"
+                android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent1 : R.style.TextAppearance_Eagle_Receive1}"
+                tools:text="@string/receive"
+                tools:textAppearance="@style/TextAppearance.Eagle.Receive1" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{tx.cryptoValue()}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="0.0001 BTC"
+                />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/fee"
+                android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent1 : R.style.TextAppearance_Eagle_Receive1}"
+                app:isVisible="@{tx.isSent}"
+                tools:textAppearance="@style/TextAppearance.Eagle.Receive1" />
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{tx.feeValue()}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                app:isVisible="@{tx.isSent}"
+                tools:text="0.000001 BTC"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/hash"
+                android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent2 : R.style.TextAppearance_Eagle_Receive2}"
+                tools:textAppearance="@style/TextAppearance.Eagle.Receive2" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{tx.hash}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                tools:text="this is the has"
+                />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_normal"
+                android:text="@string/view_block_explorer"
+                android:textColor="@{context.getColor(tx.isSent ? R.color.sent : R.color.receive)}"
+                tools:textColor="@color/receive"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</layout>

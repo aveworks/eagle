@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Eagle</string>
+
+    <string name="action_about">About</string>
+
+    <string name="intro_text">the Bitcoin watcher</string>
+
+    <string name="title_transactions">Transactions</string>
+
+    <string name="address_xpub">Address / xPub</string>
+    <string name="eagle_eye">Eagle Eye</string>
+    <string name="paste_demo">Paste Demo xPub</string>
+    <string name="sent">Sent</string>
+    <string name="receive">Receive</string>
+    <string name="fee">Fee</string>
+    <string name="balance">Balance</string>
+    <string name="hash">Hash</string>
+    <string name="date">Date</string>
+    <string name="view_block_explorer">View on Block Explorer</string>
+
+    <string name="error_message">There was an error: %1$s</string>
+</resources>

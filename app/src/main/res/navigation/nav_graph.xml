@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.aveworks.eagle.fragments.HomeFragment"
+        android:label="@string/app_name">
+        <action
+            android:id="@+id/action_homeFragment_to_transactionListFragment"
+            app:destination="@id/transactionListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/transactionListFragment"
+        android:name="com.aveworks.eagle.fragments.TransactionListFragment"
+        android:label="@string/title_transactions" >
+        <argument
+            android:name="xpub"
+            app:argType="string"
+            app:nullable="false"
+            android:defaultValue="xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ" />
+        <action
+            android:id="@+id/action_transactionListFragment_to_transactionDetailsFragment"
+            app:destination="@id/transactionDetailsFragment" />
+    </fragment>
+    <dialog
+        android:id="@+id/transactionDetailsFragment"
+        android:name="com.aveworks.eagle.fragments.TransactionDetailsFragment">
+        <argument
+            android:name="transaction"
+            app:argType="com.aveworks.eagle.data.Transaction" />
+    </dialog>
+
+</navigation>

@@ -1,0 +1,114 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: 'dagger.hilt.android.plugin'
+apply plugin: 'androidx.navigation.safeargs.kotlin'
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        applicationId "com.aveworks.cryptoview"
+        minSdkVersion 24
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        // DI https://gist.github.com/manuelvicnt/437668cda3a891d347e134b1de29aee1
+        // To disable checking for the InstallIn annotation in some modules,
+        // you need to enable the compiler option in your build.gradle file like this:
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments["dagger.hilt.disableModulesHaveInstallInCheck"] = "true"
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    buildFeatures {
+        viewBinding true
+        dataBinding true
+    }
+
+    // Many third party libraries use Java 8 language features
+    // Hilt, Retrofit
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8.toString()
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: "libs", include: ["*.jar"])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation "androidx.core:core-ktx:$coreKtxVersion"
+//    implementation "androidx.fragment:fragment-ktx:$ktxVersion"
+
+    implementation "androidx.appcompat:appcompat:$appCompatVersion"
+
+
+    // TODO needed ?
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayoutVersion"
+
+    // Lifecycle
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion"
+
+    // RxJava
+    implementation "io.reactivex.rxjava3:rxjava:$rxJavaVersion"
+    implementation "io.reactivex.rxjava3:rxkotlin:$rxKotlinVersion"
+    implementation "io.reactivex.rxjava3:rxandroid:$rxAndroidVersion"
+
+    // Jackson Kotlin Module
+    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonKotlinVersion"
+
+
+    // OkHttp & Retrofit
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    implementation "com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion"
+    implementation "com.squareup.retrofit2:converter-jackson:$retrofitVersion"
+    testImplementation "com.squareup.okhttp3:mockwebserver:$okHttpVersion"
+
+
+    // Hilt (DI)
+    compileOnly "com.squareup.inject:assisted-inject-annotations-dagger2:$assistedInjectVersion"
+    implementation "com.google.dagger:hilt-android:$hiltVersion"
+    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hiltViewModelVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$hiltVersion"
+    kapt "androidx.hilt:hilt-compiler:$hiltViewModelVersion"
+    kapt "com.squareup.inject:assisted-inject-processor-dagger2:$assistedInjectVersion"
+
+    // Material
+    implementation "com.google.android.material:material:$materialVersion"
+
+    // Navigation
+    implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+    implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+
+    // Paging
+    implementation "androidx.paging:paging-runtime-ktx:$pagingVersion"
+    implementation "androidx.paging:paging-rxjava3:$pagingVersion"
+
+
+    testImplementation "junit:junit:$junitVersion"
+//    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+//    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+}
