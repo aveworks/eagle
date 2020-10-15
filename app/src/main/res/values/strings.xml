@@ -16,7 +16,9 @@
     <string name="balance">Balance</string>
     <string name="hash">Hash</string>
     <string name="date">Date</string>
+    <string name="load_more">Load more</string>
     <string name="view_block_explorer">View on Block Explorer</string>
+    <string name="try_again">Try Again</string>
 
-    <string name="error_message">There was an error: %1$s</string>
+    <string name="error_message">Something went wrong:\n %1$s</string>
 </resources>

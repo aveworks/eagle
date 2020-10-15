@@ -20,35 +20,44 @@ import retrofit2.HttpException
 class TransactionListViewModel @AssistedInject constructor(
     private val analytics: Analytics,
     private val service: BlockchainService,
-    @Assisted private val xpub: String
+    @Assisted val xpub: String
 ) : ViewModel() {
-
-    private val txLiveData: MutableLiveData<TransactionResponse> =
-        MutableLiveData<TransactionResponse>()
-
     private val disposables = CompositeDisposable()
 
-    val transactions: LiveData<TransactionResponse> by lazy {
+    var hasMoreTransactions = true
+
+    val events: MutableLiveData<Events> = MutableLiveData<Events>()
+    val wallet: MutableLiveData<Wallet> = MutableLiveData<Wallet>()
+    val transactions: MutableLiveData<List<Transaction>> by lazy {
         loadTransactions()
-        txLiveData
+        MutableLiveData(arrayListOf())
+    }
+
+    private var transactionList = arrayListOf<Transaction>()
+
+    private var transactionStream: MutableLiveData<List<Transaction>>? = null
+
+    /**
+     * Use this stream to append data to the adapter
+     */
+    fun createTransactionStream(): MutableLiveData<List<Transaction>> {
+        transactionStream = MutableLiveData<List<Transaction>>()
+        return transactionStream!!
     }
 
     private fun loadTransactions() {
-        // TODO inject service
+        disposables.clear()
 
-//disposables.clear()
-//        Log.v("WTF", "disposables : " + disposables.size())
-
-        // http 429 // too many requests
-
-        // Do an asynchronous operation to fetch users.
         service
-            .multiAddressObservable(xpub)
+            .multiAddressObservable(xpub, offset = transactionList.size)
             .subscribeOn(Schedulers.io())
-            // .observeOn(AndroidSchedulers.mainThread()) // no need as we are posting values to LiveData
+            /**
+             * No need to use observeOn(AndroidSchedulers.mainThread()) as we are posting values to LiveData
+             * doOnSubscribe runs on Schedulers.io() and can easily miss that
+             */
+            // .observeOn(AndroidSchedulers.mainThread())
             .doOnSubscribe {
-                Log.v("WTF", "SHOW LOADER")
-                txLiveData.postValue(TransactionResponse.Loading)
+                events.postValue(Events.Loading(isLoadMore()))
             }
             .map { it ->
                 it.also { response ->
@@ -65,19 +74,30 @@ class TransactionListViewModel @AssistedInject constructor(
             }
             .subscribeBy(
                 onError = {
-                    it.printStackTrace()
                     analytics.trackException(it)
-                    txLiveData.postValue(TransactionResponse.Error(it))
+                    events.postValue(Events.Error(isLoadMore(), it))
                 },
                 onNext = {
-                    txLiveData.postValue(TransactionResponse.Success(it.wallet, it.txs))
+                    if (transactionList.isEmpty()) {
+                        wallet.postValue(it.wallet)
+                    }
+
+                    if (it.txs.isEmpty()) {
+                        hasMoreTransactions = false
+                    }
+
+                    transactionList.addAll(it.txs)
+                    transactions.postValue(transactionList)
+                    transactionStream?.postValue(it.txs)
+
                 }
             ).addTo(disposables)
 
     }
 
+    private fun isLoadMore(): Boolean = transactionList.isNotEmpty()
+
     override fun onCleared() {
-        Log.v("WTF", "onCleared")
         disposables.dispose()
         super.onCleared()
     }
@@ -104,8 +124,7 @@ class TransactionListViewModel @AssistedInject constructor(
     }
 }
 
-sealed class TransactionResponse {
-    object Loading : TransactionResponse()
-    class Success(val wallet: Wallet, val transactions: List<Transaction>) : TransactionResponse()
-    class Error(val error: Throwable) : TransactionResponse()
+sealed class Events {
+    class Loading(val isLoadMore: Boolean) : Events()
+    class Error(val isLoadMore: Boolean, val error: Throwable) : Events()
 }

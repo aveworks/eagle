@@ -17,12 +17,10 @@ import io.reactivex.rxjava3.schedulers.Schedulers
 import retrofit2.HttpException
 
 class TransactionDetailsViewModel constructor(
-    private val tx: Transaction
+    tx: Transaction
 ) : ViewModel() {
 
-    val transactions: LiveData<Transaction> by lazy {
-        MutableLiveData<Transaction>(tx)
-    }
+    val transaction: LiveData<Transaction> = MutableLiveData(tx)
 
     class TransactionDetailsViewModelFactory(private val tx: Transaction) :
         ViewModelProvider.Factory {

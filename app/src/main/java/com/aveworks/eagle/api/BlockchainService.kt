@@ -22,34 +22,34 @@ import java.io.IOException
 import java.net.SocketTimeoutException
 
 
-interface BlockchainService{
+interface BlockchainService {
 
     @GET("multiaddr")
     fun multiAddress(@Query("active") address: String): Call<MultiAddressResponse>
 
     @GET("multiaddr")
     fun multiAddressObservable(
-        @Query("active") address: String, @Query("n") limit: Int = 50, @Query(
-            "offset"
-        ) offset: Int = 0
+        @Query("active") address: String, @Query("n") limit: Int = 50,
+        @Query("offset") offset: Int = 0
     ): Observable<MultiAddressResponse>
 
-    @GET("failing")
-    fun multiAddressObservableFailing(@Query("active") address: String): Observable<MultiAddressResponse>
-
-    companion object{
+    companion object {
         private const val BASE_URL = "https://blockchain.info/"
 
-        private val logger = HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
+        private val logger =
+            HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BASIC }
 
         private val client = OkHttpClient.Builder()
             .addInterceptor(logger)
             .build()
 
-        fun create(): BlockchainService{
+        fun create(): BlockchainService {
             return create(BASE_URL.toHttpUrl())
         }
 
+        /**
+         * To my knowledge currently only Jackson w/ Kotlin module supports the null safety of kotlin data classes
+         */
         fun create(url: HttpUrl): BlockchainService {
             return Retrofit.Builder()
                 .baseUrl(url)
@@ -68,6 +68,11 @@ interface BlockchainService{
     }
 }
 
+/**
+ * TODO
+ *  - move errors to string resource
+ *  - Return message for HTTP 429 - Too many requests
+ */
 fun getBlockchainError(e: Throwable): String? {
     when (e) {
         is HttpException -> {
@@ -76,7 +81,7 @@ fun getBlockchainError(e: Throwable): String? {
             }
         }
         is MissingKotlinParameterException -> {
-            return "API seems changed"
+            return "Couldn't parse data. Blockchain API maybe have changed?"
         }
         is SocketTimeoutException -> {
             return "Socket Timeout"

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <item name="fastadapter_balance_item_id" type="id" />
+    <item name="fastadapter_transaction_item_id" type="id" />
+    <item name="fastadapter_footer_item_id" type="id" />
+</resources>

@@ -7,23 +7,19 @@
 
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout"
+    <androidx.constraintlayout.motion.widget.MotionLayout
+        android:id="@+id/motionLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/toolbar_margin"
-        android:layout_marginStart="@dimen/margin_normal"
-        android:layout_marginEnd="@dimen/margin_normal"
-        android:layout_marginBottom="@dimen/margin_normal">
-
+        app:layoutDescription="@xml/fragment_home_xml_constraintlayout_scene"
+        >
 
         <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:layout_marginBottom="16dp"
+            android:id="@+id/logo"
+            android:layout_width="0dp"
+            android:layout_height="206dp"
             android:adjustViewBounds="true"
-            android:contentDescription="TODO"
+            android:contentDescription="@string/app_name"
             android:cropToPadding="false"
             android:scaleType="centerInside"
             app:layout_constraintBottom_toTopOf="@+id/guideline3"
@@ -37,6 +33,9 @@
             android:id="@+id/button"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:text="@string/eagle_eye"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -47,14 +46,15 @@
             android:id="@+id/textView"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center"
             android:text="@string/app_name"
             android:textColor="@color/primaryDarkColor"
             android:textSize="32sp"
+            android:alpha="1.0"
             app:layout_constraintEnd_toEndOf="@+id/textView2"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/textView2"
-            app:layout_constraintTop_toBottomOf="@+id/imageView" />
+            app:layout_constraintTop_toTopOf="@+id/guideline3" />
 
         <TextView
             android:id="@+id/textView2"
@@ -87,13 +87,15 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
             android:hint="@string/address_xpub"
             app:endIconMode="clear_text"
             app:layout_constraintBottom_toTopOf="@+id/button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView">
+            app:layout_constraintTop_toBottomOf="@+id/textView2">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/xpub"
@@ -125,6 +127,6 @@
             android:orientation="horizontal"
             app:layout_constraintGuide_percent="0.33" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.motion.widget.MotionLayout>
 
 </layout>

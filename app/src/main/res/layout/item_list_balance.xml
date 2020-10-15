@@ -2,7 +2,9 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <variable
             name="wallet"
             type="com.aveworks.eagle.data.Wallet" />
@@ -26,13 +28,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/label"
+                android:id="@+id/direction"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/balance"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
-                android:textColor="@color/white"></TextView>
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/value"
@@ -47,13 +49,13 @@
                 android:id="@+id/address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="@{xpub}"
-                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-                android:singleLine="true"
-                android:ellipsize="middle"
                 android:layout_marginStart="@dimen/margin_normal"
                 android:layout_marginEnd="@dimen/margin_normal"
+                android:ellipsize="middle"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@{xpub}"
+                android:textAppearance="@style/TextAppearance.AppCompat.Caption"
                 tools:text="xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
