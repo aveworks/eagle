@@ -1,10 +1,7 @@
 package com.aveworks.eagle.fragments
 
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -28,13 +25,12 @@ class HomeFragment : AppFragment<FragmentHomeBinding>(R.layout.fragment_home, en
 
         binding.button.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToTransactionListFragment(
-                viewModel.xPub.value
+                viewModel.xPubSubject.value
             )
             findNavController().navigate(direction)
         }
 
         binding.demo.setOnClickListener {
-            TransactionListFragmentDirections.actionTransactionListFragmentToTransactionDetailsFragment()
             binding.xpub.setText(demoXPub)
         }
 
