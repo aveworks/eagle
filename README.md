@@ -1,7 +1,6 @@
-Eagle
----
-An Android Bitcoin xPub/Address transaction viewer
----
+# Eagle
+
+## An Android Bitcoin xPub/Address transaction viewer
 
 Using latest recommended practices for Android app development.
 
@@ -25,6 +24,19 @@ Using latest recommended practices for Android app development.
 * OkHttp
 * Retrofit
 
+**UI Components**
+* Material
+* FastAdapter
+
 TODO:
 * Show all transaction outputs in details view
 * Improve error messages
+
+## Requirements
+Download the latest release of the [Android Studio](https://developer.android.com/studio) (v4.1)
+
+Open the project and `Run` it.
+
+## Tests
+
+There are some basic Unit / Integration / UI tests.

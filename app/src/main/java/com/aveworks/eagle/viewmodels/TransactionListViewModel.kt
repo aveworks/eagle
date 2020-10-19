@@ -38,7 +38,7 @@ class TransactionListViewModel @AssistedInject constructor(
     private var transactionStream: MutableLiveData<List<Transaction>>? = null
 
     /**
-     * Use this stream to append data to the adapter
+     * Create a new `stream` of transactions to easily append data to the adapter
      */
     fun createTransactionStream(): MutableLiveData<List<Transaction>> {
         transactionStream = MutableLiveData<List<Transaction>>()
@@ -88,6 +88,7 @@ class TransactionListViewModel @AssistedInject constructor(
 
                     transactionList.addAll(it.txs)
                     transactions.postValue(transactionList)
+                    // Send only the new transactions, this way we can append the data to the adapter
                     transactionStream?.postValue(it.txs)
 
                 }

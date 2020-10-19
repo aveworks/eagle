@@ -8,19 +8,19 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject
 
 class HomeViewModel : ViewModel() {
     private val disposables = CompositeDisposable()
-    internal val xPub = BehaviorSubject.create<String>()
+    internal val xPubSubject = BehaviorSubject.create<String>()
 
     val xPubValidLiveData = MutableLiveData<Boolean>()
 
     init {
-        xPub
+        xPubSubject
             .map(::validate)
             .distinctUntilChanged() // propagate only when validation changes
             .subscribe(xPubValidLiveData::postValue)
             .addTo(disposables)
     }
 
-    fun xPubChanged(x: String) = xPub.onNext(x)
+    fun xPubChanged(x: String) = xPubSubject.onNext(x)
 
     // TODO xPub validation
     private fun validate(xPub: String): Boolean = xPub.length > 1
