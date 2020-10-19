@@ -6,10 +6,6 @@
     <data>
 
         <variable
-            name="clickListener"
-            type="android.view.View.OnClickListener" />
-
-        <variable
             name="tx"
             type="com.aveworks.eagle.data.Transaction" />
 
@@ -17,124 +13,101 @@
 
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:onClick="@{clickListener}">
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_small">
 
         <FrameLayout
             android:id="@+id/bar"
             android:layout_width="@dimen/direction_bar"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_marginStart="@dimen/margin_small"
-            android:layout_marginTop="6dp"
-            android:layout_marginEnd="@dimen/margin_small"
-            android:layout_marginBottom="6dp"
             app:backgroundResource="@{tx.isSent ? R.color.sent : R.color.receive}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             tools:background="@color/receive" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/direction"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_normal"
-            android:layout_marginBottom="@dimen/margin_normal"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/label"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{tx.isSent ? @string/sent : @string/receive}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="@string/receive"></TextView>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:text="@{tx.isSent ? @string/sent : @string/receive}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintStart_toEndOf="@+id/bar"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="@string/receive"></TextView>
 
 
-                    <TextView
+        <TextView
 
-                        android:id="@+id/value"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@{tx.cryptoValue()}"
-                        android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent1 : R.style.TextAppearance_Eagle_Receive1}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="0.0001 BTC"
-                        tools:textAppearance="@style/TextAppearance.Eagle.Receive1"></TextView>
-                </LinearLayout>
+            android:id="@+id/value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@{tx.cryptoValue()}"
+            android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent1 : R.style.TextAppearance_Eagle_Receive1}"
+            app:layout_constraintEnd_toStartOf="@+id/fiat_value"
+            app:layout_constraintStart_toStartOf="@+id/direction"
+            app:layout_constraintTop_toBottomOf="@+id/direction"
+            tools:text="0.0001 BTC"
+            tools:textAppearance="@style/TextAppearance.Eagle.Receive1"></TextView>
 
+        <TextView
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="end"
-                    android:orientation="vertical">
-
-                    <TextView
-
-                        android:id="@+id/date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@{tx.date(false)}"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="23 Sept, 2020"></TextView>
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:text="@{tx.date(false)}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintBaseline_toBaselineOf="@+id/direction"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="23 Sept, 2020"></TextView>
 
 
-                    <TextView
-                        android:id="@+id/fiat_value"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginEnd="8dp"
-                        android:text="@{tx.fiatValue()}"
-                        android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent2 : R.style.TextAppearance_Eagle_Receive2}"
-                        app:isGone="@{tx.fiatValue() == null}"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:text="$1.00"
-                        tools:textAppearance="@style/TextAppearance.Eagle.Receive2"></TextView>
-                </LinearLayout>
+        <TextView
+            android:id="@+id/fiat_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{tx.fiatValue()}"
 
-            </LinearLayout>
+            android:textAppearance="@{tx.isSent ? R.style.TextAppearance_Eagle_Sent2 : R.style.TextAppearance_Eagle_Receive2}"
+            app:isGone="@{tx.fiatValue() == null}"
+            app:layout_constraintBaseline_toBaselineOf="@+id/value"
+            app:layout_constraintEnd_toEndOf="@+id/date"
+            tools:text="$1.00"
+            tools:textAppearance="@style/TextAppearance.Eagle.Receive2"></TextView>
 
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:singleLine="true"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
-                android:text="@{tx.address}"
-                tools:text="bc1123efdsfag4fsdffasdfasdfadfadfadfadfadfadfadfadfsfadfadfa"></TextView>
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="6dp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:text="@{tx.address}"
+            android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/fiat_value"
+            app:layout_constraintStart_toStartOf="@+id/value"
+            app:layout_constraintTop_toBottomOf="@+id/value"
+            tools:text="bc1123efdsfag4fsdffasdfasdfadfadfadfadfadfadfadfadfsfadfadfa"></TextView>
 
-        </LinearLayout>
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="left"
+            app:constraint_referenced_ids="bar"
+            tools:layout_editor_absoluteX="411dp" />
 
 
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

@@ -1,5 +1,7 @@
 package com.aveworks.eagle.fragments
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import com.aveworks.eagle.databinding.FragmentTransactionDetailsBinding
 import com.aveworks.eagle.viewmodels.TransactionDetailsViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import dagger.hilt.android.AndroidEntryPoint
+
 
 @AndroidEntryPoint
 class TransactionDetailsFragment : BottomSheetDialogFragment() {
@@ -29,15 +32,25 @@ class TransactionDetailsFragment : BottomSheetDialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(layoutInflater, R.layout.fragment_transaction_details, container, false)
+        binding = DataBindingUtil.inflate(
+            layoutInflater,
+            R.layout.fragment_transaction_details,
+            container,
+            false
+        )
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.transactions.observe(viewLifecycleOwner) { transaction ->
+        viewModel.transaction.observe(viewLifecycleOwner) { transaction ->
             binding.tx = transaction
+        }
+
+        binding.setClickListener {
+            val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse("https://www.blockchain.com/btc/tx/" + viewModel.transaction.value?.hash))
+            startActivity(browserIntent)
         }
     }
 }

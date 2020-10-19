@@ -1,6 +1,8 @@
 package com.aveworks.eagle.data
 
 import android.os.Parcelable
+import com.aveworks.eagle.utils.cryptoValue
+import com.aveworks.eagle.utils.fiatValue
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.android.parcel.IgnoredOnParcel
@@ -36,11 +38,22 @@ data class Transaction(
     }
 
     // Get all output addresses excluding our address (eg. change)
-//    val addresses : List<String> = outputs.filter { it.xpub == null }.map { it.address }
-//
-//    val addressesString : String by lazy {
-//        addressList.joinToString(", ")
-//    }
+    @IgnoredOnParcel
+    val addresses : List<String> = outputs.filter { it.xpub == null }.map { it.address }
+
+    /**
+     * Get the first non change output if exists
+     */
+    @IgnoredOnParcel
+    val output: TransactionOutput? by lazy{
+        for (output in outputs) {
+            if (isReceive() || output.xpub == null) {
+                return@lazy output
+            }
+        }
+
+        null
+    }
 
     fun isSent(): Boolean {
         return amount < 0
@@ -48,21 +61,16 @@ data class Transaction(
 
     fun isReceive(): Boolean = !isSent()
 
-    fun cryptoValue(): String = String.format("%.8f $CRYPTO_SYMBOL", abs(amount) / SHATOSHI_DIVIDER)
+    fun cryptoValue(): String = cryptoValue(amount)
 
-    fun feeValue(): String = String.format("%.8f $CRYPTO_SYMBOL", abs(fee) / SHATOSHI_DIVIDER)
+    fun feeValue(): String = cryptoValue(fee)
 
-    fun fiatValue(): String? =
-        fiatAmount?.let { String.format("$FIAT_SYMBOL%.2f", abs(it) / 100.0) }
+    fun fiatValue(): String? = fiatAmount?.let { fiatValue(it) }
 
     fun date(full: Boolean): String? =
         (if (full) dateFormatFull else dateFormatShort).let { it.format(Date(timestamp * 1000)) }
 
     companion object {
-        internal const val SHATOSHI_DIVIDER = 1e8
-        internal const val CRYPTO_SYMBOL = "BTC"
-        private const val FIAT_SYMBOL = "$"
-
         private val dateFormatFull = SimpleDateFormat("MMM d, yyyy HH:mm:ss", Locale.US)
         private val dateFormatShort = SimpleDateFormat("MMM d, yyyy", Locale.US)
     }

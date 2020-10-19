@@ -2,6 +2,11 @@ package com.aveworks.eagle
 
 import android.util.Log
 
+/**
+ * A simple Analytics service. Can track screen view and exceptions
+ * Currently is just a stub.
+ */
+
 interface Analytics{
     fun trackScreenView();
     fun trackException(it: Throwable)

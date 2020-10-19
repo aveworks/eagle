@@ -27,7 +27,7 @@ class BlockchainServiceTest {
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return MockResponse()
                     .setResponseCode(200)
-                    .setBody(readFromFile("multiaddr.json"))
+                    .setBody(TestUtils.readFromFile("multiaddr.json"))
             }
         }
     }
@@ -38,7 +38,7 @@ class BlockchainServiceTest {
     }
 
     @Test
-    fun testMultiAddress() {
+    fun testMultiAddress_response() {
 
         var httpResponse =
             BlockchainService.create(mockWebServer.url("/")).multiAddress("dummy").execute()
@@ -55,42 +55,5 @@ class BlockchainServiceTest {
         assertEquals(txs.size, 50)
         assertEquals(wallet.finalBalance, 8549)
         assertEquals(info.local["conversion"] as? Double, 8769.98350366)
-
-
-        val txSend = txs[0]
-        val txReceive = txs[1]
-
-        // Test Send Transaction
-        assertTrue(txSend.isSent())
-        assertFalse(txSend.isReceive())
-        assertEquals(
-            "cbc06203f949804a512290ade05dcab35cf30c16b43bb0ede6f5074f1f8c3b9e",
-            txSend.hash
-        )
-        assertEquals(-612687, txSend.amount)
-        assertTrue(txSend.amount < 0)
-        assertEquals("0.00612687 BTC", txSend.cryptoValue())
-
-        // Test Receive Transaction
-        assertFalse(txReceive.isSent())
-        assertTrue(txReceive.isReceive())
-        assertEquals(
-            "4524ce25c3134b42970dd94c6d2096a81dc9fb7381b986fe5eb57d98ede7655d",
-            txReceive.hash
-        )
-        assertEquals(559182, txReceive.amount)
-        assertTrue(txReceive.amount > 0)
-        assertEquals("0.00559182 BTC", txReceive.cryptoValue())
-
-        // fiatAmount is only available from the Observable call
-        assertNull(txSend.fiatAmount)
     }
-
-    fun readFromFile(path: String): String {
-        val reader = InputStreamReader(this.javaClass.classLoader?.getResourceAsStream(path))
-        val contents = reader.readText()
-        reader.close()
-        return contents
-    }
-
 }

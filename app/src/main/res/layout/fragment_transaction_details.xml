@@ -9,6 +9,10 @@
             name="tx"
             type="com.aveworks.eagle.data.Transaction" />
 
+        <variable
+            name="clickListener"
+            type="android.view.View.OnClickListener" />
+
         <import type="com.aveworks.eagle.R" />
 
     </data>
@@ -45,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{tx.date(true)}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textIsSelectable="true"
                 tools:text="23 Sept, 2020" />
 
 
@@ -61,8 +66,9 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{tx.cryptoValue()}"
+                android:text='@{tx.output != null ? tx.output.cryptoValue() : "" }'
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textIsSelectable="true"
                 tools:text="0.0001 BTC"
                 />
 
@@ -81,6 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{tx.feeValue()}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textIsSelectable="true"
                 app:isVisible="@{tx.isSent}"
                 tools:text="0.000001 BTC"
                 />
@@ -99,16 +106,19 @@
                 android:layout_height="wrap_content"
                 android:text="@{tx.hash}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textIsSelectable="true"
                 tools:text="this is the has"
                 />
 
             <Button
+                android:id="@+id/block_explorer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/margin_normal"
                 android:text="@string/view_block_explorer"
                 android:textColor="@{context.getColor(tx.isSent ? R.color.sent : R.color.receive)}"
                 tools:textColor="@color/receive"
+                android:onClick="@{clickListener}"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
 
         </LinearLayout>
