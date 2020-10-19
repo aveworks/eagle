@@ -34,7 +34,7 @@
       "balance": 0,
       "time": 1547223190,
       "block_index": 0,
-      "block_height": 558093,
+      "block_height": null,
       "inputs": [
         {
           "sequence": 4294967295,
