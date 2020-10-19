@@ -23,9 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name="com.aveworks.eagle.ScrollingActivity" android:theme="@style/Theme.Eagle.NoActionBar"/>
-
     </application>
 
 </manifest>
