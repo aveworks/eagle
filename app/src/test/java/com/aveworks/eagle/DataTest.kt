@@ -55,6 +55,9 @@ class DataTest {
         assertEquals(36881 , send.fee)
         assertEquals("cbc06203f949804a512290ade05dcab35cf30c16b43bb0ede6f5074f1f8c3b9e", send.hash)
 
+        // Pending tx
+        assertTrue(send.isPending())
+
         assertEquals("0.00612687 BTC" ,send.cryptoValue())
         assertEquals("0.00036881 BTC" ,send.feeValue())
         assertEquals("Jan 11, 2019" ,send.date(false))
@@ -71,6 +74,7 @@ class DataTest {
         assertEquals(559182 , receive.amount)
         assertTrue(receive.isReceive())
         assertFalse(receive.isSent())
+        assertFalse(receive.isPending())
 
         assertEquals("0.00559182 BTC" ,receive.cryptoValue())
     }

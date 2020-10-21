@@ -55,6 +55,8 @@ data class Transaction(
         null
     }
 
+    fun isPending(): Boolean = blockHeight == null
+
     fun isSent(): Boolean {
         return amount < 0
     }
