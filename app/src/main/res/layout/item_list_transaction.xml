@@ -42,11 +42,10 @@
             android:textAppearance="@style/TextAppearance.MaterialComponents.Caption"
             app:layout_constraintStart_toEndOf="@+id/bar"
             app:layout_constraintTop_toTopOf="parent"
-            tools:text="@string/receive"></TextView>
+            tools:text="@string/receive" />
 
 
         <TextView
-
             android:id="@+id/value"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -58,7 +57,7 @@
             app:layout_constraintStart_toStartOf="@+id/direction"
             app:layout_constraintTop_toBottomOf="@+id/direction"
             tools:text="0.0001 BTC"
-            tools:textAppearance="@style/TextAppearance.Eagle.Receive1"></TextView>
+            tools:textAppearance="@style/TextAppearance.Eagle.Receive1" />
 
         <TextView
 

@@ -3,6 +3,9 @@ package com.aveworks.eagle
 import com.aveworks.eagle.api.BlockchainService
 import com.aveworks.eagle.viewmodels.TransactionListViewModel
 import io.reactivex.rxjava3.kotlin.subscribeBy
+import kotlinx.serialization.json.double
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -54,6 +57,6 @@ class BlockchainServiceTest {
 
         assertEquals(txs.size, 50)
         assertEquals(wallet.finalBalance, 8549)
-        assertEquals(info.local["conversion"] as? Double, 8769.98350366)
+        assertEquals(info.local["conversion"]?.jsonPrimitive?.double, 8769.98350366)
     }
 }

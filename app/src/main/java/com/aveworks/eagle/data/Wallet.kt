@@ -1,12 +1,12 @@
 package com.aveworks.eagle.data
 
 import com.aveworks.eagle.utils.cryptoValue
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@Serializable
 data class Wallet(
-    @field:JsonProperty("final_balance") val finalBalance: Long
+    @SerialName("final_balance") val finalBalance: Long
 ) {
     fun cryptoValue(): String = cryptoValue(finalBalance)
 }
