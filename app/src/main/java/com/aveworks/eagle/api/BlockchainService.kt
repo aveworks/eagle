@@ -2,20 +2,19 @@ package com.aveworks.eagle.api
 
 
 import com.aveworks.eagle.data.MultiAddressResponse
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.fasterxml.jackson.module.kotlin.MissingKotlinParameterException
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.reactivex.rxjava3.core.Observable
+import kotlinx.serialization.SerializationException
+import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrl
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
-import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.HttpException
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
-import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Query
 import java.io.IOException
@@ -51,16 +50,17 @@ interface BlockchainService {
          * To my knowledge currently only Jackson w/ Kotlin module supports the null safety of kotlin data classes
          */
         fun create(url: HttpUrl): BlockchainService {
+
+            val contentType = "application/json".toMediaType()
+            val json = Json {
+                ignoreUnknownKeys = true
+                isLenient = true
+            }
+
             return Retrofit.Builder()
                 .baseUrl(url)
                 .client(client)
-                .addConverterFactory(
-                    JacksonConverterFactory.create(
-                        ObjectMapper().registerModule(
-                            KotlinModule()
-                        )
-                    )
-                )
+                .addConverterFactory(json.asConverterFactory(contentType))
                 .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build()
                 .create(BlockchainService::class.java)
@@ -80,8 +80,8 @@ fun getBlockchainError(e: Throwable): String? {
                 return it
             }
         }
-        is MissingKotlinParameterException -> {
-            return "Couldn't parse data. Blockchain API maybe have changed?"
+        is SerializationException -> {
+            return "Couldn't parse data"
         }
         is SocketTimeoutException -> {
             return "Socket Timeout"

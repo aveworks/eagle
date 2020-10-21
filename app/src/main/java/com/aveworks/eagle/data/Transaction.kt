@@ -3,25 +3,26 @@ package com.aveworks.eagle.data
 import android.os.Parcelable
 import com.aveworks.eagle.utils.cryptoValue
 import com.aveworks.eagle.utils.fiatValue
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 import kotlinx.android.parcel.IgnoredOnParcel
 import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.math.abs
 
+@Serializable
 @Parcelize
-@JsonIgnoreProperties(ignoreUnknown = true)
 data class Transaction(
-    @field:JsonProperty("hash") val hash: String,
-    @field:JsonProperty("result") val amount: Long,
-    @field:JsonProperty("fee") val fee: Long,
-    @field:JsonProperty("time") val timestamp: Long,
-    @field:JsonProperty("block_height") val blockHeight: Long?,
-    @field:JsonProperty("out") val outputs: List<TransactionOutput> = listOf(),
+    @SerialName("hash") val hash: String,
+    @SerialName("result") val amount: Long,
+    @SerialName("fee") val fee: Long,
+    @SerialName("time") val timestamp: Long,
+    @SerialName("block_height") val blockHeight: Long? = null,
+    @SerialName("out") val outputs: List<TransactionOutput> = listOf(),
 
-    var fiatAmount: Long?,
+    @Transient
+    var fiatAmount: Long? = null,
 ) : Parcelable {
 
     @IgnoredOnParcel

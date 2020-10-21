@@ -1,16 +1,17 @@
 package com.aveworks.eagle.data
 
 import android.os.Parcelable
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
-import kotlinx.android.parcel.Parcelize
 
+import kotlinx.android.parcel.Parcelize
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+
+@Serializable
 @Parcelize
-@JsonIgnoreProperties(ignoreUnknown=true)
 data class TransactionOutput(
-    @field:JsonProperty("addr") val address: String,
-    @field:JsonProperty("value") val value: Long,
-    @field:JsonProperty("xpub") val xpub: XPub?,
+    @SerialName("addr") val address: String,
+    @SerialName("value") val value: Long,
+    @SerialName("xpub") val xpub: XPub? = null,
 ) : Parcelable{
     fun cryptoValue(): String = com.aveworks.eagle.utils.cryptoValue(value)
 }

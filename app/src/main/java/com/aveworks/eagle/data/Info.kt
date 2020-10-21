@@ -1,9 +1,11 @@
 package com.aveworks.eagle.data
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import com.fasterxml.jackson.annotation.JsonProperty
 
-@JsonIgnoreProperties(ignoreUnknown=true)
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.json.JsonElement
+
+@Serializable
 data class Info(
-    @field:JsonProperty("symbol_local") val local: HashMap<String, Any>,
+    @SerialName("symbol_local") val local: Map<String, JsonElement>,
 )
