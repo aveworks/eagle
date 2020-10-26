@@ -1,7 +1,7 @@
 package com.aveworks.eagle.api
 
 
-import com.aveworks.eagle.data.MultiAddressResponse
+import com.aveworks.common.data.MultiAddressResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.serialization.SerializationException

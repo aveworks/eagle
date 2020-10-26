@@ -15,12 +15,12 @@
     <fragment
         android:id="@+id/transactionListFragment"
         android:name="com.aveworks.eagle.fragments.TransactionListFragment"
-        android:label="@string/title_transactions" >
+        android:label="@string/title_transactions">
         <argument
             android:name="xpub"
+            android:defaultValue="xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ"
             app:argType="string"
-            app:nullable="false"
-            android:defaultValue="xpub6CfLQa8fLgtouvLxrb8EtvjbXfoC1yqzH6YbTJw4dP7srt523AhcMV8Uh4K3TWSHz9oDWmn9MuJogzdGU3ncxkBsAC9wFBLmFrWT9Ek81kQ" />
+            app:nullable="false" />
         <action
             android:id="@+id/action_transactionListFragment_to_transactionDetailsFragment"
             app:destination="@id/transactionDetailsFragment" />
@@ -30,7 +30,7 @@
         android:name="com.aveworks.eagle.fragments.TransactionDetailsFragment">
         <argument
             android:name="transaction"
-            app:argType="com.aveworks.eagle.data.Transaction" />
+            app:argType="com.aveworks.common.data.Transaction" />
     </dialog>
 
 </navigation>

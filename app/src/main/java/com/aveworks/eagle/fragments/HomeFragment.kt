@@ -3,9 +3,11 @@ package com.aveworks.eagle.fragments
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.aveworks.common.Greeting
 import com.aveworks.eagle.R
 import com.aveworks.eagle.databinding.FragmentHomeBinding
 import com.aveworks.eagle.viewmodels.HomeViewModel

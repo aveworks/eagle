@@ -1,8 +1,9 @@
-package com.aveworks.eagle.data
+package com.aveworks.common.data
 
-import com.aveworks.eagle.utils.cryptoValue
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import com.aveworks.common.utils.*
+
 
 @Serializable
 data class Wallet(

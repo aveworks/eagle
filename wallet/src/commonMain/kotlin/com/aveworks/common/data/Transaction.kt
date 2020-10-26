@@ -1,18 +1,16 @@
-package com.aveworks.eagle.data
+package com.aveworks.common.data
 
-import android.os.Parcelable
-import com.aveworks.eagle.utils.cryptoValue
-import com.aveworks.eagle.utils.fiatValue
-import kotlinx.android.parcel.IgnoredOnParcel
-import kotlinx.android.parcel.Parcelize
+import com.aveworks.common.IgnoredOnParcel
+import com.aveworks.common.Parcelable
+import com.aveworks.common.Parcelize
+import com.aveworks.common.utils.transactionDate
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
-import java.text.SimpleDateFormat
-import java.util.*
+import com.aveworks.common.utils.*
 
-@Serializable
 @Parcelize
+@Serializable
 data class Transaction(
     @SerialName("hash") val hash: String,
     @SerialName("result") val amount: Long,
@@ -70,11 +68,5 @@ data class Transaction(
 
     fun fiatValue(): String? = fiatAmount?.let { fiatValue(it) }
 
-    fun date(full: Boolean): String? =
-        (if (full) dateFormatFull else dateFormatShort).let { it.format(Date(timestamp * 1000)) }
-
-    companion object {
-        private val dateFormatFull = SimpleDateFormat("MMM d, yyyy HH:mm:ss", Locale.US)
-        private val dateFormatShort = SimpleDateFormat("MMM d, yyyy", Locale.US)
-    }
+    fun date(full: Boolean): String? = transactionDate(this, full)
 }
