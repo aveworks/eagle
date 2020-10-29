@@ -1,12 +1,13 @@
-package com.aveworks.eagle.data
+package com.aveworks.common.data
 
-import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import com.aveworks.common.Parcelable
+import com.aveworks.common.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
+
 @Parcelize
+@Serializable
 data class XPub(
     @SerialName("m") val hash: String,
     @SerialName("path") val amount: String,

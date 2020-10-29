@@ -7,7 +7,7 @@
 
         <variable
             name="wallet"
-            type="com.aveworks.eagle.data.Wallet" />
+            type="com.aveworks.common.data.Wallet" />
 
         <variable
             name="xpub"

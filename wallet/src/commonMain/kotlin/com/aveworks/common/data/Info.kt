@@ -1,4 +1,4 @@
-package com.aveworks.eagle.data
+package com.aveworks.common.data
 
 
 import kotlinx.serialization.SerialName

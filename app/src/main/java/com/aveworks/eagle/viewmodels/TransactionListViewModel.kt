@@ -1,21 +1,21 @@
 package com.aveworks.eagle.viewmodels
 
-import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.aveworks.common.data.Wallet
 import com.aveworks.eagle.Analytics
 import com.aveworks.eagle.api.BlockchainService
-import com.aveworks.eagle.data.Transaction
-import com.aveworks.eagle.data.Wallet
+import com.aveworks.common.data.Transaction
+
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.HttpException
+import kotlinx.serialization.json.doubleOrNull
+import kotlinx.serialization.json.jsonPrimitive
 
 class TransactionListViewModel @AssistedInject constructor(
     private val analytics: Analytics,
@@ -61,7 +61,7 @@ class TransactionListViewModel @AssistedInject constructor(
             }
             .map { it ->
                 it.also { response ->
-                    val conv = response.info.local["conversion"] as? Double
+                    val conv = response.info.local["conversion"]?.jsonPrimitive?.doubleOrNull
 
                     if (conv is Double) {
                         response.txs.map { tx ->
@@ -74,6 +74,7 @@ class TransactionListViewModel @AssistedInject constructor(
             }
             .subscribeBy(
                 onError = {
+                    it.printStackTrace()
                     analytics.trackException(it)
                     events.postValue(Events.Error(isLoadMore(), it))
                 },

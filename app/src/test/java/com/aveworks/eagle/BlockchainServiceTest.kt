@@ -1,62 +1,71 @@
 package com.aveworks.eagle
 
+import com.aveworks.common.data.MultiAddressResponse
 import com.aveworks.eagle.api.BlockchainService
-import com.aveworks.eagle.viewmodels.TransactionListViewModel
-import io.reactivex.rxjava3.kotlin.subscribeBy
 import kotlinx.serialization.json.double
-import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import okhttp3.mockwebserver.RecordedRequest
-import org.junit.After
-import org.junit.Assert
+import org.junit.AfterClass
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.BeforeClass
 import org.junit.Test
-import java.io.InputStreamReader
-import org.junit.Assert.*
+import retrofit2.Response
 
 class BlockchainServiceTest {
+    private var response : Response<MultiAddressResponse>? = null
 
-    private lateinit var mockWebServer: MockWebServer
+    companion object{
+        private lateinit var mockWebServer: MockWebServer
 
-    @Before
-    fun setup() {
-        mockWebServer = MockWebServer()
-        mockWebServer.start()
+        @BeforeClass
+        @JvmStatic
+        fun setup() {
+            mockWebServer = MockWebServer()
+            mockWebServer.start()
 
-        mockWebServer.dispatcher = object : Dispatcher() {
-            override fun dispatch(request: RecordedRequest): MockResponse {
-                return MockResponse()
-                    .setResponseCode(200)
-                    .setBody(TestUtils.readFromFile("multiaddr.json"))
+            mockWebServer.dispatcher = object : Dispatcher() {
+                override fun dispatch(request: RecordedRequest): MockResponse {
+                    return MockResponse()
+                        .setResponseCode(200)
+                        .setBody(TestUtils.readFromFile("multiaddr.json"))
+                }
             }
+        }
+
+        @AfterClass
+        @JvmStatic
+        fun teardown() {
+            mockWebServer.shutdown()
         }
     }
 
-    @After
-    fun teardown() {
-        mockWebServer.shutdown()
+    @Before
+    fun multiAddress_response() {
+        response = BlockchainService.create(mockWebServer.url("/")).multiAddress("dummy").execute()
     }
 
     @Test
-    fun testMultiAddress_response() {
+    fun testMultiAddress_isSuccessful() {
+        assertTrue(response!!.isSuccessful)
+    }
 
-        var httpResponse =
-            BlockchainService.create(mockWebServer.url("/")).multiAddress("dummy").execute()
+    @Test
+    fun testMultiAddress_hasWallet() {
+        assertEquals(8549L, response?.body()?.wallet?.finalBalance)
+    }
 
-        assertTrue(httpResponse.isSuccessful)
+    @Test
+    fun testMultiAddress_hasInfo() {
+        assertEquals(8769.98350366, response?.body()?.info?.local?.get("conversion")?.jsonPrimitive?.double ?: 0.0, 0.0)
+    }
 
-        var response = httpResponse.body()!!
-
-        val txs = response.txs
-        val wallet = response.wallet
-        val info = response.info
-
-
-        assertEquals(txs.size, 50)
-        assertEquals(wallet.finalBalance, 8549)
-        assertEquals(info.local["conversion"]?.jsonPrimitive?.double, 8769.98350366)
+    @Test
+    fun testMultiAddress_hasTxs() {
+        assertEquals(50, response?.body()?.txs?.size)
     }
 }

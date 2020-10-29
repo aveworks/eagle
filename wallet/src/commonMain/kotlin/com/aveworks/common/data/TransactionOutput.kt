@@ -1,17 +1,16 @@
-package com.aveworks.eagle.data
+package com.aveworks.common.data
 
-import android.os.Parcelable
-
-import kotlinx.android.parcel.Parcelize
+import com.aveworks.common.Parcelable
+import com.aveworks.common.Parcelize
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-@Serializable
 @Parcelize
+@Serializable
 data class TransactionOutput(
     @SerialName("addr") val address: String,
     @SerialName("value") val value: Long,
     @SerialName("xpub") val xpub: XPub? = null,
 ) : Parcelable{
-    fun cryptoValue(): String = com.aveworks.eagle.utils.cryptoValue(value)
+    fun cryptoValue(): String = com.aveworks.common.utils.cryptoValue(value)
 }
