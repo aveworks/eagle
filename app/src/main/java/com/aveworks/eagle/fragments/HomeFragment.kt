@@ -3,11 +3,9 @@ package com.aveworks.eagle.fragments
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Toast
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
-import com.aveworks.common.Greeting
 import com.aveworks.eagle.R
 import com.aveworks.eagle.databinding.FragmentHomeBinding
 import com.aveworks.eagle.viewmodels.HomeViewModel
@@ -27,7 +25,7 @@ class HomeFragment : AppFragment<FragmentHomeBinding>(R.layout.fragment_home, en
 
         binding.button.setOnClickListener {
             val direction = HomeFragmentDirections.actionHomeFragmentToTransactionListFragment(
-                viewModel.xPubSubject.value
+                viewModel.getXPub()
             )
             findNavController().navigate(direction)
         }
@@ -45,10 +43,10 @@ class HomeFragment : AppFragment<FragmentHomeBinding>(R.layout.fragment_home, en
         }
 
         binding.xpub.textChangeEvents().subscribe {
-            viewModel.xPubChanged(it.text.toString())
+            viewModel.setXPub(it.text.toString())
         }.addTo(onDestroyDispose)
 
-        viewModel.xPubValidLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.getXPubValidation().observe(viewLifecycleOwner, Observer {
             binding.button.isEnabled = it
         })
     }

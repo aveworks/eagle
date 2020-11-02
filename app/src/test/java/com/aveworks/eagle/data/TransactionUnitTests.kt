@@ -1,16 +1,14 @@
-package com.aveworks.eagle
+package com.aveworks.eagle.data
 
-import com.aveworks.common.data.MultiAddressResponse
 import com.aveworks.common.data.Transaction
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
+import com.aveworks.eagle.TestUtils
 import org.junit.Assert.*
 import org.junit.BeforeClass
 import org.junit.Test
 
 
 // TODO move tests to common
-class TransactionTest {
+class TransactionUnitTests {
 
     companion object{
         private lateinit var pending: Transaction

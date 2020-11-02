@@ -3,23 +3,18 @@ package com.aveworks.eagle.viewmodels
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.aveworks.common.data.Wallet
-import com.aveworks.eagle.Analytics
-import com.aveworks.eagle.api.BlockchainService
 import com.aveworks.common.data.Transaction
-
+import com.aveworks.common.data.Wallet
+import com.aveworks.eagle.repositories.TransactionsRepository
 import com.squareup.inject.assisted.Assisted
 import com.squareup.inject.assisted.AssistedInject
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.kotlin.addTo
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
-import kotlinx.serialization.json.doubleOrNull
-import kotlinx.serialization.json.jsonPrimitive
 
 class TransactionListViewModel @AssistedInject constructor(
-    private val analytics: Analytics,
-    private val service: BlockchainService,
+    private val repository: TransactionsRepository,
     @Assisted val xpub: String
 ) : ViewModel() {
     private val disposables = CompositeDisposable()
@@ -28,10 +23,7 @@ class TransactionListViewModel @AssistedInject constructor(
 
     val events: MutableLiveData<Events> = MutableLiveData<Events>()
     val wallet: MutableLiveData<Wallet> = MutableLiveData<Wallet>()
-    val transactions: MutableLiveData<List<Transaction>> by lazy {
-        loadTransactions()
-        MutableLiveData(arrayListOf())
-    }
+    val transactions: MutableLiveData<List<Transaction>> = MutableLiveData(arrayListOf())
 
     private var transactionList = arrayListOf<Transaction>()
 
@@ -48,8 +40,7 @@ class TransactionListViewModel @AssistedInject constructor(
     private fun loadTransactions() {
         disposables.clear()
 
-        service
-            .multiAddressObservable(xpub, offset = transactionList.size)
+        repository.getTransactions(xpub, transactionList.size)
             .subscribeOn(Schedulers.io())
             /**
              * No need to use observeOn(AndroidSchedulers.mainThread()) as we are posting values to LiveData
@@ -59,23 +50,9 @@ class TransactionListViewModel @AssistedInject constructor(
             .doOnSubscribe {
                 events.postValue(Events.Loading(isLoadMore()))
             }
-            .map { it ->
-                it.also { response ->
-                    val conv = response.info.local["conversion"]?.jsonPrimitive?.doubleOrNull
-
-                    if (conv is Double) {
-                        response.txs.map { tx ->
-                            tx.also {
-                                it.fiatAmount = (it.amount / 1e8 * conv * 100).toLong()
-                            }
-                        }
-                    }
-                }
-            }
             .subscribeBy(
                 onError = {
                     it.printStackTrace()
-                    analytics.trackException(it)
                     events.postValue(Events.Error(isLoadMore(), it))
                 },
                 onNext = {

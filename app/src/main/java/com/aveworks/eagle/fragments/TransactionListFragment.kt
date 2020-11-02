@@ -140,7 +140,8 @@ class TransactionListFragment : AppFragment<FragmentTransactionListBinding>(
         }
 
         // Add the already fetched transactions
-        txAdapter.add(viewModel.transactions.value!!.map { TransactionItem(it) })
+        val txs = viewModel.transactions.value!!
+        txAdapter.add(txs.map { TransactionItem(it) })
 
         // then listen to new transactions and append data
         viewModel.createTransactionStream().observe(viewLifecycleOwner) { transactions ->
@@ -150,6 +151,10 @@ class TransactionListFragment : AppFragment<FragmentTransactionListBinding>(
             txAdapter.add(transactions.map { TransactionItem(it) })
 
             footerAdapter.clear()
+        }
+
+        if(txs.isEmpty()){
+            viewModel.fetch()
         }
 
     }

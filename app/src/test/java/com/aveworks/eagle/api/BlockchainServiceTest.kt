@@ -1,7 +1,7 @@
-package com.aveworks.eagle
+package com.aveworks.eagle.api
 
 import com.aveworks.common.data.MultiAddressResponse
-import com.aveworks.eagle.api.BlockchainService
+import com.aveworks.eagle.TestUtils
 import kotlinx.serialization.json.double
 import kotlinx.serialization.json.jsonPrimitive
 import okhttp3.mockwebserver.Dispatcher
