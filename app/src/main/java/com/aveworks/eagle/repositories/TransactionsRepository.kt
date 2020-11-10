@@ -4,6 +4,7 @@ import com.aveworks.common.data.MultiAddressResponse
 import com.aveworks.eagle.Analytics
 import com.aveworks.eagle.api.BlockchainService
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.jsonPrimitive
 import javax.inject.Inject
@@ -14,7 +15,7 @@ class TransactionsRepository @Inject constructor(
     private val analytics: Analytics,
     private val service: BlockchainService,
 ) {
-    fun getTransactions(xpub: String, offset: Int = 0): Observable<MultiAddressResponse> {
+    fun getTransactions(xpub: String, offset: Int = 0): Single<MultiAddressResponse> {
         return service
             .multiAddressObservable(xpub, offset = offset)
             .doOnError {

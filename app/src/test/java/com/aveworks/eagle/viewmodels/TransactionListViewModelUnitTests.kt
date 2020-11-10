@@ -10,6 +10,7 @@ import com.aveworks.eagle.ImmediateSchedulersRule
 import com.aveworks.eagle.repositories.TransactionsRepository
 import com.nhaarman.mockitokotlin2.*
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.internal.schedulers.ImmediateThinScheduler
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -52,7 +53,7 @@ class TransactionListViewModelUnitTests {
             // whenever(response.info).thenReturn(mock())
             whenever(response.txs).thenReturn(listOf(mock()))
 
-            Observable.just(response)
+            Single.just(response)
         }
 
         viewModel = TransactionListViewModel(repository, "xpub")
@@ -101,7 +102,7 @@ class TransactionListViewModelUnitTests {
         reset(repository)
 
         whenever(repository.getTransactions(any(), any())).then {
-            Observable.error<Exception>(mock<Exception>())
+            Single.error<Exception>(mock<Exception>())
         }
     }
 }

@@ -55,7 +55,7 @@ class TransactionListViewModel @AssistedInject constructor(
                     it.printStackTrace()
                     events.postValue(Events.Error(isLoadMore(), it))
                 },
-                onNext = {
+                onSuccess = {
                     if (transactionList.isEmpty()) {
                         wallet.postValue(it.wallet)
                     }

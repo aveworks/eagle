@@ -4,6 +4,7 @@ package com.aveworks.eagle.api
 import com.aveworks.common.data.MultiAddressResponse
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl
@@ -24,13 +25,10 @@ import java.net.SocketTimeoutException
 interface BlockchainService {
 
     @GET("multiaddr")
-    fun multiAddress(@Query("active") address: String): Call<MultiAddressResponse>
-
-    @GET("multiaddr")
     fun multiAddressObservable(
         @Query("active") address: String, @Query("n") limit: Int = 50,
         @Query("offset") offset: Int = 0
-    ): Observable<MultiAddressResponse>
+    ): Single<MultiAddressResponse>
 
     companion object {
         private const val BASE_URL = "https://blockchain.info/"
